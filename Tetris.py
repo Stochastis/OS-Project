@@ -44,11 +44,14 @@ class Tetris:
                 new_line.append(0)
             self.field.append(new_line)
 
-    def intersects(self):
+    def intersects(self): #Checks to see if a figure is intersecting with an edge of the map.
         intersection = False
         for i in range(4):
             for j in range(4):
                 if i*4+j in self.figure.image():
-                    if i+self.figure.y > self.height-1 or j+self.figure.x > self.width - 1 or j+self.figure.x < 0 or self.field[i+self.figure.y][j+self.figure.x] > 0:
+                    if i+self.figure.y > self.height-1 or \
+                        j+self.figure.x > self.width - 1 or \
+                        j+self.figure.x < 0 or \
+                        self.field[i+self.figure.y][j+self.figure.x] > 0:
                         intersection = True
         return intersection
