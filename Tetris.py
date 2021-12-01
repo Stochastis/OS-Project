@@ -1,8 +1,14 @@
 import pygame
+import random
+
+colors = [(0,0,0), (120,37,179), (100,179,179), (80,34,22), (80,134,22), (180,34,22), (180,34,122)]
 
 class Figure:
-    figures = [ #Contains all 7 tetrominos and their rotations. All in a 4x4 grid.
-                #TODO: Verify that rotations are in order (clockwise or counter-clockwise) according to Tetris game development rules.
+    x, y = 0, 0
+
+    figures = [#Contains all 7 tetrominos and their rotations.  All in a 4x4 grid.  #TODO:
+                #Verify that rotations are in order (clockwise or
+                #counter-clockwise) according to Tetris game development rules.
         [[1, 5, 9, 13], [4, 5, 6, 7]], #'I' piece
         [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]], #'J' piece
         [[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]], #'L' piece
@@ -16,7 +22,8 @@ class Figure:
         self.x = x
         self.y = y
         self.type = random.randint(0, len(self.figures) - 1)
-        self.color = random.randint(1, len(colors) - 1) #Instead of randomizing colors, change this to the specific color for each tetromino.
+        self.color = random.randint(1, len(colors) - 1) #Instead of randomizing colors, change this to the specific color for each
+                                                        #tetromino.
         self.rotation = 0
 
     def image(self):
@@ -60,11 +67,11 @@ class Tetris:
         intersection = False
         for i in range(4):
             for j in range(4):
-                if i*4+j in self.figure.image():
-                    if i+self.figure.y > self.height-1 or \
-                        j+self.figure.x > self.width - 1 or \
-                        j+self.figure.x < 0 or \
-                        self.field[i+self.figure.y][j+self.figure.x] > 0:
+                if i * 4 + j in self.figure.image():
+                    if i + self.figure.y > self.height - 1 or \
+                        j + self.figure.x > self.width - 1 or \
+                        j + self.figure.x < 0 or \
+                        self.field[i + self.figure.y][j + self.figure.x] > 0:
                         intersection = True
         return intersection
 
@@ -76,7 +83,7 @@ class Tetris:
         for i in range(4):
             for j in range(4): # Set up matrix
                 if i * 4 + j in self.figure.image():
-                    self.field[i+self.figure.y][j+self.figure.x] = self.figure.color
+                    self.field[i + self.figure.y][j + self.figure.x] = self.figure.color
                     self.break_lines()
                     self.new_figure()
                     if self.intersects(): # If tetromino interesects with field
@@ -89,7 +96,7 @@ class Tetris:
     def break_lines(self):
         lines = 0
         for i in range(1, self.height):
-            zeros=0
+            zeros = 0
             for j in range(self.width):
                 if self.field[i][j] == 0:
                     zeros +=1
@@ -98,7 +105,7 @@ class Tetris:
                 for i1 in range(i,1,-1):
                     for j in range(self.width):
                         self.field[i1][j] = self.field[i1 - 1][j]
-                self.score += lines **2
+                self.score += lines ** 2
 
     ''' 
     The moving methods. In every method we remember the last position and if an
@@ -149,7 +156,7 @@ class Tetris:
     done = False
     clock = pygame.time.Clock()
     fps = 25
-    game  = Tetris(20,10)
+    game = Tetris(20,10)
     counter = 0
 
     pressing_down = False
@@ -166,7 +173,7 @@ class Tetris:
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                done  = True
+                done = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygamee.K_UP:
                     game.rotate()
@@ -197,9 +204,9 @@ class Tetris:
                     p = i * 4 + j
                     if p in game.figure.image():
                         pygame.draw.rect(screen, colors[game.figure.color],
-                                        [game.x + game.zoom *(j +game.figure.x) +1,
-                                         game.y  +game.zoom * (i +game.figure.y)+1,
-                                         game.zoom - 2, game.zoom -2])
+                                        [game.x + game.zoom * (j + game.figure.x) + 1,
+                                         game.y + game.zoom * (i + game.figure.y) + 1,
+                                         game.zoom - 2, game.zoom - 2])
         font = pygame.font.SysFont('Calibri', 25, True, False)
         font1 = pygame.font.SysFont('Calibri', 65, True, False)
         text = font.render("Score: " + str(game.score), True, BLACK)
