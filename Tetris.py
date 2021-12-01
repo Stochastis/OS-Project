@@ -1,5 +1,5 @@
-import pygame 
-from pygame.locals import *
+import pygame
+
 class Figure:
     figures = [ #Contains all 7 tetrominos and their rotations. All in a 4x4 grid.
                 #TODO: Verify that rotations are in order (clockwise or counter-clockwise) according to Tetris game development rules.
@@ -24,6 +24,7 @@ class Figure:
 
     def rotate(self):
         self.rotation = (self.rotation + 1) % len(self.figures[self.type])
+
 '''
 Initialize game. Create field of height and width and create a new tetromino
 positioned at (3,0)
@@ -49,6 +50,7 @@ class Tetris:
             self.field.append(new_line)
     def new_figure(self):
         self.figure = Figure(3, 0)
+
     '''
     Check if the tetromino flying down is going to clash with anything fixed on the field.
     The for loops go through a 4x4 matrix, checking if the tetromino is out of bounds
@@ -65,6 +67,7 @@ class Tetris:
                         self.field[i+self.figure.y][j+self.figure.x] > 0:
                         intersection = True
         return intersection
+
     '''
     When a tetromino reaches the bottom, we freeze the field so that the controls are no
     longer focused on that piece and instead on a new one flying down
@@ -78,6 +81,7 @@ class Tetris:
                     self.new_figure()
                     if self.intersects(): # If tetromino interesects with field
                         game.state = "gameover"
+
     '''
     Check if there are any lines that are filled that we need to destroy.
     Destroying a line goes from bottom to top
@@ -95,6 +99,7 @@ class Tetris:
                     for j in range(self.width):
                         self.field[i1][j] = self.field[i1 - 1][j]
                 self.score += lines **2
+
     ''' 
     The moving methods. In every method we remember the last position and if an
     intersection already exists. If there is an intersection in the tetrominoes, return to previous state
