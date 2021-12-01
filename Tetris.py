@@ -104,13 +104,13 @@ class Tetris:
     '''
     def freeze(self):
         for i in range(4):
-            for j in range(4): # Set up matrix
+            for j in range(4):
                 if i * 4 + j in self.figure.image():
                     self.field[i + self.figure.y][j + self.figure.x] = self.figure.color
-                    self.break_lines()
-                    self.new_figure()
-                    if self.intersects(): # If tetromino interesects with field
-                        game.state = "gameover"
+        self.break_lines()
+        self.new_figure()
+        if self.intersects():
+            self.state = "gameover"
 
     ''' 
     The moving methods. In every method we remember the last position and if an
