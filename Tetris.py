@@ -217,11 +217,12 @@ while not done:
     #Background of the screen
     screen.fill(BLACK)
 
+    #Draws the grey screen border.
+    pygame.draw.rect(screen, GRAY, [game.x, game.y + game.zoom, game.zoom * 10, game.zoom * 19], 1)
+
     #Draws the grid and the pieces that have already landed.
     for i in range(game.height):
         for j in range(game.width):
-            #Draws the grey grid.
-            #pygame.draw.rect(screen, GRAY, [game.x + game.zoom * j, game.y + game.zoom * i, game.zoom, game.zoom], 1)
             if game.field[i][j] > 0:
                 pygame.draw.rect(screen, colors[game.field[i][j]],
                                  [game.x + game.zoom * j + 1, game.y + game.zoom * i + 1, game.zoom - 2, game.zoom - 1])
