@@ -213,16 +213,20 @@ while not done:
     if event.type == pygame.KEYUP:
             if event.key == pygame.K_DOWN:
                 pressing_down = False
+    
+    #Background of the screen
+    screen.fill(BLACK)
 
-    screen.fill(BLACK) #Background of the screen
-
+    #Draws the grid and the pieces that have already landed.
     for i in range(game.height):
         for j in range(game.width):
-            pygame.draw.rect(screen, GRAY, [game.x + game.zoom * j, game.y + game.zoom * i, game.zoom, game.zoom], 1)
+            #Draws the grey grid.
+            #pygame.draw.rect(screen, GRAY, [game.x + game.zoom * j, game.y + game.zoom * i, game.zoom, game.zoom], 1)
             if game.field[i][j] > 0:
                 pygame.draw.rect(screen, colors[game.field[i][j]],
                                  [game.x + game.zoom * j + 1, game.y + game.zoom * i + 1, game.zoom - 2, game.zoom - 1])
 
+    #Draws the current piece that the player is moving.
     if game.figure is not None:
         for i in range(4):
             for j in range(4):
