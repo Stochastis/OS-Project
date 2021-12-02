@@ -207,7 +207,7 @@ while not done:
                 game.go_side(1)
             if event.key == pygame.K_SPACE:
                 game.go_space()
-            if event.key == pygame.K_ESCAPE:
+            if event.key == pygame.K_ESCAPE and game.state == "gameover":
                 game.__init__(20, 10)
 
     if event.type == pygame.KEYUP:
