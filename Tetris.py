@@ -207,6 +207,7 @@ while not done:
                 game.go_side(1)
             if event.key == pygame.K_SPACE:
                 game.go_space()
+            #Clears the board and initiates a new game if you are at a gameover.
             if event.key == pygame.K_ESCAPE and game.state == "gameover":
                 game.__init__(20, 10)
 
