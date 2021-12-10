@@ -237,7 +237,6 @@ while not done:
         screen, GRAY, [game.x, game.y + game.zoom, game.zoom * 10, game.zoom * 19], 1)
 
     # Draws the grid and the pieces that have already landed.
-    # TODO: Get ghost piece to draw.
     for i in range(game.height):
         for j in range(game.width):
             if game.field[i][j] > 0:
@@ -245,6 +244,7 @@ while not done:
                                  [game.x + game.zoom * j + 1, game.y + game.zoom * i + 1, game.zoom - 2, game.zoom - 1])
 
     # Draws the current piece that the player is moving.
+    # TODO: Get ghost piece to draw.
     if game.figure is not None:
         for i in range(4):
             for j in range(4):
