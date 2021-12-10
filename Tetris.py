@@ -1,29 +1,31 @@
 import pygame
 import random
 
-colors = [(0,0,0), (0,255,255), (255,255,0), (128,0,128), (0,255,0), (255,0,0), (0,0,255), (255,127,0)]
+colors = [(0, 0, 0), (0, 255, 255), (255, 255, 0), (128, 0, 128),
+          (0, 255, 0), (255, 0, 0), (0, 0, 255), (255, 127, 0)]
+
 
 class Figure:
     x, y = 0, 0
 
-    figures = [#Contains all 7 tetrominos and their rotations.  All in a 4x4 grid.  #TODO:
-                #Verify that rotations are in order (clockwise or
-                #counter-clockwise) according to Tetris game development rules.
-        [[1, 5, 9, 13], [4, 5, 6, 7]], #'I' piece
-        [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]], #'J' piece
-        [[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]], #'L' piece
-        [[1, 2, 4, 5], [1, 5, 6, 10]], #'S' piece
-        [[1, 2, 6, 7], [2, 6, 5, 9]], #'Z' piece
-        [[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]], #'T' piece
-        [[1, 2, 5, 6]], #'O' piece
+    figures = [  # Contains all 7 tetrominos and their rotations.  All in a 4x4 grid.  #TODO:
+        # Verify that rotations are in order (clockwise or
+        # counter-clockwise) according to Tetris game development rules.
+        [[1, 5, 9, 13], [4, 5, 6, 7]],  # 'I' piece
+        [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]],  # 'J' piece
+        [[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]],  # 'L' piece
+        [[1, 2, 4, 5], [1, 5, 6, 10]],  # 'S' piece
+        [[1, 2, 6, 7], [2, 6, 5, 9]],  # 'Z' piece
+        [[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]],  # 'T' piece
+        [[1, 2, 5, 6]],  # 'O' piece
     ]
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.type = random.randint(0, len(self.figures) - 1)
-        
-        #Set piece color appropriately:
+
+        # Set piece color appropriately:
         if self.type == 0:
             self.color = 1
         elif self.type == 1:
@@ -47,10 +49,13 @@ class Figure:
     def rotate(self):
         self.rotation = (self.rotation + 1) % len(self.figures[self.type])
 
+
 '''
 Initialize game. Create field of height and width and create a new tetromino
 positioned at (3,0)
 '''
+
+
 class Tetris:
     level = 2
     score = 0
@@ -83,6 +88,7 @@ class Tetris:
     The for loops go through a 4x4 matrix, checking if the tetromino is out of bounds
     and if it's touching a busy game field. If there is a zero, then we're all good and the field is empty
     '''
+
     def intersects(self):
         intersection = False
         for i in range(4):
@@ -99,6 +105,7 @@ class Tetris:
     Check if there are any lines that are filled that we need to destroy.
     Destroying a line goes from bottom to top
     '''
+
     def break_lines(self):
         lines = 0
         for i in range(1, self.height):
@@ -117,11 +124,13 @@ class Tetris:
     When a tetromino reaches the bottom, we freeze the field so that the controls are no
     longer focused on that piece and instead on a new one flying down
     '''
+
     def freeze(self):
         for i in range(4):
             for j in range(4):
                 if i * 4 + j in self.figure.image():
-                    self.field[i + self.figure.y][j + self.figure.x] = self.figure.color
+                    self.field[i + self.figure.y][j +
+                                                  self.figure.x] = self.figure.color
         self.break_lines()
         self.new_figure()
         if self.intersects():
@@ -131,27 +140,32 @@ class Tetris:
     The moving methods. In every method we remember the last position and if an
     intersection already exists. If there is an intersection in the tetrominoes, return to previous state
     '''
-    def go_space(left):
+
+    def go_space(self, left):
         while not self.intersects():
             self.figure.y += 1
         self.figure.y -= 1
         self.freeze()
+
     def go_down(self):
         self.figure.y += 1
         if self.intersects():
             self.figure.y -= 1
             self.freeze()
-    def go_side(self,dx):
+
+    def go_side(self, dx):
         old_x = self.figure.x
         self.figure.x += dx
         if self.intersects():
             self.figure.x = old_x
+
     def rotate(self):
         old_rotation = self.figure.rotation
         self.figure.rotate()
         if self.intersects():
             self.figure.rotation = old_rotation
-    
+
+
 '''
 oui oui initalízê le gâme engine hoh hoh hoh
 (change this later)
@@ -161,11 +175,11 @@ pygame.init()
 '''
 définir des couleurs
 '''
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-GRAY = (128,128,128)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
 
-size = (400,500)
+size = (400, 500)
 screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("SHOW ME WHAT YOU GOT")
@@ -207,28 +221,29 @@ while not done:
                 game.go_side(1)
             if event.key == pygame.K_SPACE:
                 game.go_space()
-            #Clears the board and initiates a new game if you are at a gameover.
+            # Clears the board and initiates a new game if you are at a gameover.
             if event.key == pygame.K_ESCAPE and game.state == "gameover":
                 game.__init__(20, 10)
 
     if event.type == pygame.KEYUP:
-            if event.key == pygame.K_DOWN:
-                pressing_down = False
-    
-    #Background of the screen
+        if event.key == pygame.K_DOWN:
+            pressing_down = False
+
+    # Background of the screen
     screen.fill(BLACK)
 
-    #Draws the grey screen border.
-    pygame.draw.rect(screen, GRAY, [game.x, game.y + game.zoom, game.zoom * 10, game.zoom * 19], 1)
+    # Draws the grey screen border.
+    pygame.draw.rect(
+        screen, GRAY, [game.x, game.y + game.zoom, game.zoom * 10, game.zoom * 19], 1)
 
-    #Draws the grid and the pieces that have already landed.
+    # Draws the grid and the pieces that have already landed.
     for i in range(game.height):
         for j in range(game.width):
             if game.field[i][j] > 0:
                 pygame.draw.rect(screen, colors[game.field[i][j]],
                                  [game.x + game.zoom * j + 1, game.y + game.zoom * i + 1, game.zoom - 2, game.zoom - 1])
 
-    #Draws the current piece that the player is moving.
+    # Draws the current piece that the player is moving.
     if game.figure is not None:
         for i in range(4):
             for j in range(4):
@@ -236,7 +251,8 @@ while not done:
                 if p in game.figure.image():
                     pygame.draw.rect(screen, colors[game.figure.color],
                                      [game.x + game.zoom * (j + game.figure.x) + 1,
-                                      game.y + game.zoom * (i + game.figure.y) + 1,
+                                      game.y + game.zoom *
+                                      (i + game.figure.y) + 1,
                                       game.zoom - 2, game.zoom - 2])
 
     font = pygame.font.SysFont('Calibri', 25, True, False)
