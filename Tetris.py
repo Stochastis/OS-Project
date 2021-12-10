@@ -237,6 +237,7 @@ while not done:
         screen, GRAY, [game.x, game.y + game.zoom, game.zoom * 10, game.zoom * 19], 1)
 
     # Draws the grid and the pieces that have already landed.
+    # TODO: Get ghost piece to draw.
     for i in range(game.height):
         for j in range(game.width):
             if game.field[i][j] > 0:
