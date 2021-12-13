@@ -1,6 +1,6 @@
 # Tetris Game, written in Python 3.6.5
-#Version: 1.0
-# Date: 26.05.2018
+# Version: 2.0
+# Date: 12.12.2021
 
 import pygame  # version 1.9.3
 import random
@@ -391,7 +391,7 @@ class MainBoard:
 
         sine = math.floor(
             255 * math.fabs(math.sin(2*math.pi*(gameClock.frameTick/(SINE_ANI_PERIOD*2)))))
-        #sine = 127 + math.floor(127 * math.sin(2*math.pi*(gameClock.frameTick/SINE_ANI_PERIOD)))
+        # sine = 127 + math.floor(127 * math.sin(2*math.pi*(gameClock.frameTick/SINE_ANI_PERIOD)))
         sineEffect = [sine, sine, sine]
         return sineEffect
 
