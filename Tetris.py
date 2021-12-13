@@ -261,21 +261,31 @@ class MainBoard:
 
             # Draws moving piece
             if self.piece.status == 'moving':
+                ghostOffset = 0
+                flag = False
+                while (True):
+                    for i in range(0, 4):
+                        currentRow = self.piece.blocks[i].currentPos.row
+                        currentCol = self.piece.blocks[i].currentPos.col
+
+                        if currentRow + ghostOffset > self.rowNum - 1 or self.blockMat[currentRow + ghostOffset][currentCol] != 'empty':
+                            flag = True
+                            break
+                    if flag:
+                        break
+                    ghostOffset += 1
+
                 for i in range(0, 4):
+                    currentRow = self.piece.blocks[i].currentPos.row
+                    currentCol = self.piece.blocks[i].currentPos.col
+
                     # Draw active piece
                     self.draw_BLOCK(
-                        self.xPos, self.yPos, self.piece.blocks[i].currentPos.row, self.piece.blocks[i].currentPos.col, blockColors[self.piece.type])
+                        self.xPos, self.yPos, currentRow, currentCol, blockColors[self.piece.type])
 
-                    # Draw grey blocks beneath active piece
-                    """ bottom = 1
-                    while (True):
-                        for i in range(0, 4):
-                            if self.blockMat[self.piece.blocks[i].currentPos.row + bottom][self.piece.blocks[i].currentPos.col] != 'empty':
-                                break
-                            bottom += 1 """
-
+                    # Draw ghost piece beneath active piece
                     self.draw_BLOCK(
-                        self.xPos, self.yPos, self.piece.blocks[i].currentPos.row + 2, self.piece.blocks[i].currentPos.col, LIGHT_GRAY)
+                        self.xPos, self.yPos, currentRow + ghostOffset - 1, currentCol, LIGHT_GRAY)
 
             if self.gamePause == True:
                 pygame.draw.rect(gameDisplay, DARK_GRAY, [
