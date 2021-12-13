@@ -247,8 +247,10 @@ class MainBoard:
             gameDisplay.blit(versionText, (self.xPos++7.2 *
                              self.blockSize, self.yPos+11.5*self.blockSize))
 
+        # Draws all pieces on the board
         else:
 
+            # Draws all static pieces and empty spaces
             for row in range(0, self.rowNum):
                 for col in range(0, self.colNum):
                     if self.blockMat[row][col] == 'empty':
@@ -257,10 +259,15 @@ class MainBoard:
                         self.draw_BLOCK(self.xPos, self.yPos, row,
                                         col, blockColors[self.blockMat[row][col]])
 
+            # Draws moving piece
             if self.piece.status == 'moving':
                 for i in range(0, 4):
+                    # Draw active piece
                     self.draw_BLOCK(
                         self.xPos, self.yPos, self.piece.blocks[i].currentPos.row, self.piece.blocks[i].currentPos.col, blockColors[self.piece.type])
+                    # Draw ghost piece
+                    self.draw_BLOCK(
+                        self.xPos, self.yPos, self.piece.blocks[i].currentPos.row + 1, self.piece.blocks[i].currentPos.col, LIGHT_GRAY)
 
             if self.gamePause == True:
                 pygame.draw.rect(gameDisplay, DARK_GRAY, [
