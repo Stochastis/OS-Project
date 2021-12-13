@@ -211,17 +211,17 @@ class MainBoard:
     # Draws the pieces and borders around all pieces.
     def draw_BLOCK(self, xRef, yRef, row, col, color):
         # Borders around each individual squares
-        pygame.draw.rect(gameDisplay, BLACK, [xRef+(col*self.blockSize), yRef+(
+        pygame.draw.rect(gameDisplay, BLACK if color != LIGHT_GRAY else WHITE, [xRef+(col*self.blockSize), yRef+(
             row*self.blockSize), self.blockSize, self.blockLineWidth], 0)
-        pygame.draw.rect(gameDisplay, BLACK, [xRef+(col*self.blockSize)+self.blockSize -
+        pygame.draw.rect(gameDisplay, BLACK if color != LIGHT_GRAY else WHITE, [xRef+(col*self.blockSize)+self.blockSize -
                          self.blockLineWidth, yRef+(row*self.blockSize), self.blockLineWidth, self.blockSize], 0)
-        pygame.draw.rect(gameDisplay, BLACK, [xRef+(col*self.blockSize), yRef+(
+        pygame.draw.rect(gameDisplay, BLACK if color != LIGHT_GRAY else WHITE, [xRef+(col*self.blockSize), yRef+(
             row*self.blockSize), self.blockLineWidth, self.blockSize], 0)
-        pygame.draw.rect(gameDisplay, BLACK, [xRef+(col*self.blockSize), yRef+(
+        pygame.draw.rect(gameDisplay, BLACK if color != LIGHT_GRAY else WHITE, [xRef+(col*self.blockSize), yRef+(
             row*self.blockSize)+self.blockSize-self.blockLineWidth, self.blockSize, self.blockLineWidth], 0)
 
         # Colors in squares
-        pygame.draw.rect(gameDisplay, color, [xRef+(col*self.blockSize)+self.blockLineWidth, yRef+(
+        pygame.draw.rect(gameDisplay, color if color != LIGHT_GRAY else BLACK, [xRef+(col*self.blockSize)+self.blockLineWidth, yRef+(
             row*self.blockSize)+self.blockLineWidth, self.blockSize-(2*self.blockLineWidth), self.blockSize-(2*self.blockLineWidth)], 0)
 
     def draw_GAMEBOARD_BORDER(self):
@@ -261,13 +261,14 @@ class MainBoard:
 
             # Draws moving piece
             if self.piece.status == 'moving':
+
+                # Calculate offset for ghost piece
                 ghostOffset = 0
                 flag = False
                 while (True):
                     for i in range(0, 4):
                         currentRow = self.piece.blocks[i].currentPos.row
                         currentCol = self.piece.blocks[i].currentPos.col
-
                         if currentRow + ghostOffset > self.rowNum - 1 or self.blockMat[currentRow + ghostOffset][currentCol] != 'empty':
                             flag = True
                             break
@@ -275,17 +276,17 @@ class MainBoard:
                         break
                     ghostOffset += 1
 
+                # Draws each individual block for active and ghost piece
                 for i in range(0, 4):
                     currentRow = self.piece.blocks[i].currentPos.row
                     currentCol = self.piece.blocks[i].currentPos.col
 
+                    # Draw ghost piece
+                    self.draw_BLOCK(
+                        self.xPos, self.yPos, currentRow + ghostOffset - 1, currentCol, LIGHT_GRAY)
                     # Draw active piece
                     self.draw_BLOCK(
                         self.xPos, self.yPos, currentRow, currentCol, blockColors[self.piece.type])
-
-                    # Draw ghost piece beneath active piece
-                    self.draw_BLOCK(
-                        self.xPos, self.yPos, currentRow + ghostOffset - 1, currentCol, LIGHT_GRAY)
 
             if self.gamePause == True:
                 pygame.draw.rect(gameDisplay, DARK_GRAY, [
