@@ -221,8 +221,9 @@ class MainBoard:
             row*self.blockSize)+self.blockSize-self.blockLineWidth, self.blockSize, self.blockLineWidth], 0)
 
         # Colors in squares
-        pygame.draw.rect(gameDisplay, color if color != LIGHT_GRAY else BLACK, [xRef+(col*self.blockSize)+self.blockLineWidth, yRef+(
-            row*self.blockSize)+self.blockLineWidth, self.blockSize-(2*self.blockLineWidth), self.blockSize-(2*self.blockLineWidth)], 0)
+        if color != LIGHT_GRAY:
+            pygame.draw.rect(gameDisplay, color, [xRef+(col*self.blockSize)+self.blockLineWidth, yRef+(
+                row*self.blockSize)+self.blockLineWidth, self.blockSize-(2*self.blockLineWidth), self.blockSize-(2*self.blockLineWidth)], 0)
 
     def draw_GAMEBOARD_BORDER(self):
         pygame.draw.rect(gameDisplay, BORDER_COLOR, [self.xPos-self.boardLineWidth-self.blockLineWidth, self.yPos-self.boardLineWidth -
