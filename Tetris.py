@@ -265,9 +265,17 @@ class MainBoard:
                     # Draw active piece
                     self.draw_BLOCK(
                         self.xPos, self.yPos, self.piece.blocks[i].currentPos.row, self.piece.blocks[i].currentPos.col, blockColors[self.piece.type])
-                    # Draw ghost piece
+
+                    # Draw grey blocks beneath active piece
+                    """ bottom = 1
+                    while (True):
+                        for i in range(0, 4):
+                            if self.blockMat[self.piece.blocks[i].currentPos.row + bottom][self.piece.blocks[i].currentPos.col] != 'empty':
+                                break
+                            bottom += 1 """
+
                     self.draw_BLOCK(
-                        self.xPos, self.yPos, self.piece.blocks[i].currentPos.row + 1, self.piece.blocks[i].currentPos.col, LIGHT_GRAY)
+                        self.xPos, self.yPos, self.piece.blocks[i].currentPos.row + 2, self.piece.blocks[i].currentPos.col, LIGHT_GRAY)
 
             if self.gamePause == True:
                 pygame.draw.rect(gameDisplay, DARK_GRAY, [
