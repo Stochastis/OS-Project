@@ -9,6 +9,7 @@ import sys
 
 pygame.init()
 pygame.font.init()
+pygame.mixer.init()  # pygame.mixer module handles sounds effects and music
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
