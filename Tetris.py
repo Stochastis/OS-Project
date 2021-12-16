@@ -533,6 +533,9 @@ class MainBoard:
 
         if self.gameStatus == 'firstStart':
             if key.enter.status == 'pressed':
+                print(pygame.__file__)
+                pygame.mixer.music.load('Tetris Theme.mp3')
+                pygame.mixer.music.play()
                 self.restart()
 
         elif self.gameStatus == 'running':
