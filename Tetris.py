@@ -14,7 +14,11 @@ if pygame.mixer.get_init() == None:  # Checks that the pygame.mixer module is in
     print("ERROR: pygame.mixer not initialized")
     pygame.quit()
     sys.exit()
-# TODO: Delete this comment
+pygame.mixer.music.load('Sounds\Tetris Theme.mp3')
+movePieceChannel = pygame.mixer.Channel(0)
+movePieceSound = pygame.mixer.Sound('Sounds\Move Piece.mp3')
+rotatePieceSound = pygame.mixer.Sound('Sounds\Rotate Piece.mp3')
+
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
 
@@ -534,7 +538,6 @@ class MainBoard:
         if self.gameStatus == 'firstStart':
             if key.enter.status == 'pressed':
                 print(pygame.__file__)
-                pygame.mixer.music.load('Tetris Theme.mp3')
                 pygame.mixer.music.play()
                 self.restart()
 
@@ -689,6 +692,7 @@ class MovingPiece:
         return origin
 
     def rotate(self, rotationType):
+        rotatePieceSound.play()
 
         if self.type != 'O':
             tempBlocks = [[0] * 2 for i in range(4)]
@@ -759,6 +763,8 @@ class MovingPiece:
                         self.createNextMove('down')
                     else:
                         self.createNextMove('downRight')
+                        if not movePieceChannel.get_busy():
+                            movePieceChannel.play(movePieceSound)
 
                 elif key.xNav.status == 'left':
                     if self.movCollisionCheck('down') == True:
@@ -768,6 +774,8 @@ class MovingPiece:
                         self.createNextMove('down')
                     else:
                         self.createNextMove('downLeft')
+                        if not movePieceChannel.get_busy():
+                            movePieceChannel.play(movePieceSound)
 
                 else:  # 'idle'
                     if self.movCollisionCheck('down') == True:
@@ -784,11 +792,15 @@ class MovingPiece:
                         self.createNextMove('noMove')
                     else:
                         self.createNextMove('right')
+                        if not movePieceChannel.get_busy():
+                            movePieceChannel.play(movePieceSound)
                 elif key.xNav.status == 'left':
                     if self.movCollisionCheck('left') == True:
                         self.createNextMove('noMove')
                     else:
                         self.createNextMove('left')
+                        if not movePieceChannel.get_busy():
+                            movePieceChannel.play(movePieceSound)
                 else:
                     self.createNextMove('noMove')
 
