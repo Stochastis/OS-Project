@@ -14,7 +14,7 @@ if pygame.mixer.get_init() == None:  # Checks that the pygame.mixer module is in
     print("ERROR: pygame.mixer not initialized")
     pygame.quit()
     sys.exit()
-
+# TODO: Delete this comment
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
 
