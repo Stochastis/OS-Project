@@ -22,6 +22,11 @@ lockPieceSound = pygame.mixer.Sound('Sounds\Lock Piece.mp3')
 touchPieceChannel = pygame.mixer.Channel(1)
 touchPieceSound = pygame.mixer.Sound('Sounds\Piece Touch.mp3')
 touchPieceChannel.set_volume(0.2)
+singleSound = pygame.mixer.Sound('Sounds\Single.mp3')
+doubleSound = pygame.mixer.Sound('Sounds\Double.mp3')
+tripleSound = pygame.mixer.Sound('Sounds\Triple.mp3')
+tetrisSound = pygame.mixer.Sound('Sounds\Tetris.mp3')
+gameOverSound = pygame.mixer.Sound('Sounds\Game Over.mp3')
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
@@ -253,7 +258,7 @@ class MainBoard:
         # Displays starting text
         if self.gameStatus == 'firstStart':
 
-            titleText = fontTitle.render('SHOW ME WHAT YOU GOT', False, WHITE)
+            titleText = fontTitle.render('TETRIS', False, WHITE)
             gameDisplay.blit(titleText, (self.xPos++1.55 *
                              self.blockSize, self.yPos+8*self.blockSize))
 
@@ -505,6 +510,8 @@ class MainBoard:
 
     def checkAndApplyGameOver(self):
         if self.piece.gameOverCondition == True:
+            pygame.mixer.music.stop()
+            gameOverSound.play()
             self.gameStatus = 'gameOver'
             for i in range(0, 4):
                 if self.piece.blocks[i].currentPos.row >= 0 and self.piece.blocks[i].currentPos.col >= 0:
@@ -524,13 +531,13 @@ class MainBoard:
             self.score = 999999
         self.lines = self.lines + clearedLinesNum
         if clearedLinesNum == 1:
-            pass
+            singleSound.play()
         elif clearedLinesNum == 2:
-            pass
+            doubleSound.play()
         elif clearedLinesNum == 3:
-            pass
+            tripleSound.play()
         elif clearedLinesNum == 4:
-            pass
+            tetrisSound.play()
         self.level = STARTING_LEVEL + math.floor(self.lines/10)
         if self.level > 99:
             self.level = 99
@@ -602,6 +609,7 @@ class MainBoard:
 
         else:  # 'gameOver'
             if key.enter.status == 'pressed':
+                pygame.mixer.music.play()
                 self.restart()
 
 # Class for all the definitions of current moving piece
