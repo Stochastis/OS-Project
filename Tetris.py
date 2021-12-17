@@ -16,8 +16,11 @@ if pygame.mixer.get_init() == None:  # Checks that the pygame.mixer module is in
     sys.exit()
 pygame.mixer.music.load('Sounds\Tetris Theme.mp3')
 movePieceChannel = pygame.mixer.Channel(0)
+touchPieceChannel = pygame.mixer.Channel(1)
 movePieceSound = pygame.mixer.Sound('Sounds\Move Piece.mp3')
 rotatePieceSound = pygame.mixer.Sound('Sounds\Rotate Piece.mp3')
+touchPieceSound = pygame.mixer.Sound('Sounds\Piece Touch.mp3')
+touchPieceChannel.set_volume(0.3)
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
@@ -567,7 +570,9 @@ class MainBoard:
                             self.piece.rotate('cCW')
                             key.cRotate.trig = False
 
+                    # Locks piece in place
                     elif self.piece.status == 'collided':
+                        print('DEBUG: Piece Locked')
                         if self.lineClearStatus == 'idle':
                             for i in range(0, 4):
                                 self.blockMat[self.piece.blocks[i].currentPos.row][self.piece.blocks[i].currentPos.col] = self.piece.type
@@ -627,15 +632,18 @@ class MovingPiece:
                 self.dropScore = self.dropScore + 1
             self.applyNextMove()
 
+    # Moves piece down naturally every second or so
     def slowMoveAction(self):
 
         if gameClock.fall.check(gameClock.frameTick) == True:
-            if self.movCollisionCheck('down') == True:
+            if self.movCollisionCheck('down') == True:  # Locks piece
                 self.createNextMove('noMove')
                 self.status = 'collided'
             else:
                 self.createNextMove('down')
                 self.applyNextMove()
+                if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down')):
+                    touchPieceChannel.play(touchPieceSound)
 
     def createNextMove(self, moveType):
 
@@ -763,6 +771,8 @@ class MovingPiece:
                         self.createNextMove('down')
                     else:
                         self.createNextMove('downRight')
+                        if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down') and not touchPieceChannel.get_busy()):
+                            touchPieceChannel.play(touchPieceSound)
                         if not movePieceChannel.get_busy():
                             movePieceChannel.play(movePieceSound)
 
@@ -774,6 +784,8 @@ class MovingPiece:
                         self.createNextMove('down')
                     else:
                         self.createNextMove('downLeft')
+                        if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down') and not touchPieceChannel.get_busy()):
+                            touchPieceChannel.play(touchPieceSound)
                         if not movePieceChannel.get_busy():
                             movePieceChannel.play(movePieceSound)
 
@@ -781,8 +793,11 @@ class MovingPiece:
                     if self.movCollisionCheck('down') == True:
                         self.createNextMove('noMove')
                         self.status = 'collided'
+                    # Moves piece down when pressing down
                     else:
                         self.createNextMove('down')
+                        if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down') and not touchPieceChannel.get_busy()):
+                            touchPieceChannel.play(touchPieceSound)
 
                 self.applyFastMove()
 
@@ -792,6 +807,8 @@ class MovingPiece:
                         self.createNextMove('noMove')
                     else:
                         self.createNextMove('right')
+                        if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down') and not touchPieceChannel.get_busy()):
+                            touchPieceChannel.play(touchPieceSound)
                         if not movePieceChannel.get_busy():
                             movePieceChannel.play(movePieceSound)
                 elif key.xNav.status == 'left':
@@ -799,6 +816,8 @@ class MovingPiece:
                         self.createNextMove('noMove')
                     else:
                         self.createNextMove('left')
+                        if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down') and not touchPieceChannel.get_busy()):
+                            touchPieceChannel.play(touchPieceSound)
                         if not movePieceChannel.get_busy():
                             movePieceChannel.play(movePieceSound)
                 else:
