@@ -21,7 +21,7 @@ rotatePieceSound = pygame.mixer.Sound('Sounds\Rotate Piece.mp3')
 lockPieceSound = pygame.mixer.Sound('Sounds\Lock Piece.mp3')
 touchPieceChannel = pygame.mixer.Channel(1)
 touchPieceSound = pygame.mixer.Sound('Sounds\Piece Touch.mp3')
-touchPieceChannel.set_volume(0.3)
+touchPieceChannel.set_volume(0.2)
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
@@ -651,7 +651,7 @@ class MovingPiece:
             else:
                 self.createNextMove('down')
                 self.applyNextMove()
-                if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down')):
+                if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down') and not touchPieceChannel.get_busy()):
                     touchPieceChannel.play(touchPieceSound)
 
     def createNextMove(self, moveType):
