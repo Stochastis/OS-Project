@@ -24,10 +24,12 @@ touchPieceSound = pygame.mixer.Sound('Sounds\Piece Touch.mp3')
 touchPieceChannel.set_volume(0.2)
 singleSound = pygame.mixer.Sound('Sounds\Single.mp3')
 doubleSound = pygame.mixer.Sound('Sounds\Double.mp3')
+doubleSound.set_volume(0.75)
 tripleSound = pygame.mixer.Sound('Sounds\Triple.mp3')
 tetrisSound = pygame.mixer.Sound('Sounds\Tetris.mp3')
 gameOverSound = pygame.mixer.Sound('Sounds\Game Over.mp3')
 levelUpSound = pygame.mixer.Sound('Sounds\Level Up.mp3')
+levelUpSound.set_volume(0.75)
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
@@ -817,8 +819,6 @@ class MovingPiece:
                     # Moves piece down when pressing down
                     else:
                         self.createNextMove('down')
-                        if (self.movCollisionCheck('left') or self.movCollisionCheck('right') or self.movCollisionCheck('down') and not touchPieceChannel.get_busy()):
-                            touchPieceChannel.play(touchPieceSound)
 
                 self.applyFastMove()
 
