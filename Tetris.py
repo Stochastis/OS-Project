@@ -1,5 +1,5 @@
 # Tetris Game, written in Python 3.6.5
-# Version: 2.27
+# Version: 2.30
 # Date: 12.12.2021
 
 import pygame  # version 1.9.3
@@ -267,7 +267,7 @@ class MainBoard:
             gameDisplay.blit(titleText, (self.xPos++1.55 *
                              self.blockSize, self.yPos+8*self.blockSize))
 
-            versionText = fontVersion.render('v 2.27', False, WHITE)
+            versionText = fontVersion.render('v 2.30', False, WHITE)
             gameDisplay.blit(versionText, (self.xPos++7.2 *
                              self.blockSize, self.yPos+11.5*self.blockSize))
 
