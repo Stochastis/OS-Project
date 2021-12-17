@@ -1,5 +1,5 @@
 # Tetris Game, written in Python 3.6.5
-# Version: 2.30
+# Version: 2.31
 # Date: 12.12.2021
 
 import pygame  # version 1.9.3
@@ -40,6 +40,7 @@ gameDisplay = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 pygame.display.set_caption('Tetris')
 clock = pygame.time.Clock()
 
+# Tetrominos
 pieceNames = ('I', 'O', 'T', 'S', 'Z', 'J', 'L')
 
 STARTING_LEVEL = 0  # Change this to start a new game at a higher level
@@ -68,6 +69,7 @@ fontVersion = pygame.font.SysFont('agencyfb', VERSION_FONT_SIZE)
 ROW = (0)
 COL = (1)
 
+# UI Colors
 # Some color definitions
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -78,6 +80,7 @@ BORDER_COLOR = GRAY
 NUM_COLOR = WHITE
 TEXT_COLOR = GRAY
 
+# Tetrominos Colors
 blockColors = {
     'I': (19, 232, 232),  # CYAN
     'O': (236, 236, 14),  # YELLOW
@@ -87,6 +90,7 @@ blockColors = {
     'J': (30, 30, 201),  # BLUE
     'L': (240, 110, 2)}  # ORANGE
 
+# Tetrominos spawn points
 # Initial(spawn) block definitons of each piece
 pieceDefs = {
     'I': ((1, 0), (1, 1), (1, 2), (1, 3)),
@@ -178,6 +182,7 @@ class GameClock:
         self.frameTick = self.frameTick + 1
 
 
+# Main Tetris Class
 # Class for all the game mechanics, visuals and events
 class MainBoard:
 
@@ -248,6 +253,7 @@ class MainBoard:
             pygame.draw.rect(gameDisplay, color, [xRef+(col*self.blockSize)+self.blockLineWidth, yRef+(
                 row*self.blockSize)+self.blockLineWidth, self.blockSize-(2*self.blockLineWidth), self.blockSize-(2*self.blockLineWidth)], 0)
 
+    # UI Border
     def draw_GAMEBOARD_BORDER(self):
         pygame.draw.rect(gameDisplay, BORDER_COLOR, [self.xPos-self.boardLineWidth-self.blockLineWidth, self.yPos-self.boardLineWidth -
                          self.blockLineWidth, (self.blockSize*self.colNum)+(2*self.boardLineWidth)+(2*self.blockLineWidth), self.boardLineWidth], 0)
@@ -267,7 +273,7 @@ class MainBoard:
             gameDisplay.blit(titleText, (self.xPos++1.55 *
                              self.blockSize, self.yPos+8*self.blockSize))
 
-            versionText = fontVersion.render('v 2.30', False, WHITE)
+            versionText = fontVersion.render('v 2.31', False, WHITE)
             gameDisplay.blit(versionText, (self.xPos++7.2 *
                              self.blockSize, self.yPos+11.5*self.blockSize))
 
@@ -312,6 +318,7 @@ class MainBoard:
                     self.draw_BLOCK(
                         self.xPos, self.yPos, currentRow, currentCol, blockColors[self.piece.type])
 
+            # UI Pause Screen
             if self.gamePause == True:
                 pygame.draw.rect(gameDisplay, DARK_GRAY, [
                                  self.xPos+1*self.blockSize, self.yPos+8*self.blockSize, 8*self.blockSize, 4*self.blockSize], 0)
@@ -319,6 +326,7 @@ class MainBoard:
                 gameDisplay.blit(
                     pauseText, (self.xPos++1.65*self.blockSize, self.yPos+8*self.blockSize))
 
+            # UI Game Over
             if self.gameStatus == 'gameOver':
                 pygame.draw.rect(gameDisplay, LIGHT_GRAY, [
                                  self.xPos+1*self.blockSize, self.yPos+8*self.blockSize, 8*self.blockSize, 8*self.blockSize], 0)
@@ -329,6 +337,7 @@ class MainBoard:
                 gameDisplay.blit(
                     gameOverText1, (self.xPos++2.35*self.blockSize, self.yPos+12*self.blockSize))
 
+    # UI Scoreboard Border
     def draw_SCOREBOARD_BORDER(self):
         pygame.draw.rect(gameDisplay, BORDER_COLOR, [self.xPos+(self.blockSize*self.colNum)+self.blockLineWidth, self.yPos -
                          self.boardLineWidth-self.blockLineWidth, self.scoreBoardWidth+self.boardLineWidth, self.boardLineWidth], 0)
@@ -337,6 +346,7 @@ class MainBoard:
         pygame.draw.rect(gameDisplay, BORDER_COLOR, [self.xPos+(self.blockSize*self.colNum)+self.blockLineWidth, self.yPos+(
             self.blockSize*self.rowNum)+self.blockLineWidth, self.scoreBoardWidth+self.boardLineWidth, self.boardLineWidth], 0)
 
+    # UI Scoreboard Content
     def draw_SCOREBOARD_CONTENT(self):
 
         xPosRef = self.xPos+(self.blockSize*self.colNum) + \
@@ -516,7 +526,7 @@ class MainBoard:
 
     def checkAndApplyGameOver(self):
         if self.piece.gameOverCondition == True:
-            pygame.mixer.music.stop()
+            pygame.mixer.music.stop()  # Sound Effect: Music
             gameOverSound.play()
             self.gameStatus = 'gameOver'
             for i in range(0, 4):
@@ -567,7 +577,7 @@ class MainBoard:
         if self.gameStatus == 'firstStart':
             if key.enter.status == 'pressed':
                 print(pygame.__file__)
-                pygame.mixer.music.play()
+                pygame.mixer.music.play()  # Sound Effect: Music
                 self.restart()
 
         elif self.gameStatus == 'running':
@@ -618,12 +628,13 @@ class MainBoard:
 
         else:  # 'gameOver'
             if key.enter.status == 'pressed':
-                pygame.mixer.music.play()
+                pygame.mixer.music.play()  # Sound Effect: Music
                 self.restart()
 
 # Class for all the definitions of current moving piece
 
 
+# Tetrominos Moving Piece Class
 class MovingPiece:
 
     def __init__(self, colNum, rowNum, status):
@@ -879,7 +890,7 @@ class MovingBlock:
             self.col = col
 
 
-# Main game loop
+# Main Tetris game loop
 def gameLoop():
 
     blockSize = 20
@@ -967,7 +978,7 @@ def gameLoop():
         clock.tick(60)  # Pygame clock tick function(60 fps)
 
 
-# Main program
+# Main Tetris program
 key = GameKeyInput()
 gameClock = GameClock()
 letsGoSound.play()
