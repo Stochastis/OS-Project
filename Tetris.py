@@ -16,9 +16,10 @@ if pygame.mixer.get_init() == None:  # Checks that the pygame.mixer module is in
     sys.exit()
 pygame.mixer.music.load('Sounds\Tetris Theme.mp3')
 movePieceChannel = pygame.mixer.Channel(0)
-touchPieceChannel = pygame.mixer.Channel(1)
 movePieceSound = pygame.mixer.Sound('Sounds\Move Piece.mp3')
 rotatePieceSound = pygame.mixer.Sound('Sounds\Rotate Piece.mp3')
+lockPieceSound = pygame.mixer.Sound('Sounds\Lock Piece.mp3')
+touchPieceChannel = pygame.mixer.Channel(1)
 touchPieceSound = pygame.mixer.Sound('Sounds\Piece Touch.mp3')
 touchPieceChannel.set_volume(0.3)
 
@@ -487,6 +488,7 @@ class MainBoard:
         return clearedLines
 
     def prepareNextSpawn(self):
+        lockPieceSound.play()
         self.generateNextPiece()
         self.lineClearStatus = 'idle'
         self.piece.status = 'uncreated'
@@ -521,6 +523,14 @@ class MainBoard:
         if self.score > 999999:
             self.score = 999999
         self.lines = self.lines + clearedLinesNum
+        if clearedLinesNum == 1:
+            pass
+        elif clearedLinesNum == 2:
+            pass
+        elif clearedLinesNum == 3:
+            pass
+        elif clearedLinesNum == 4:
+            pass
         self.level = STARTING_LEVEL + math.floor(self.lines/10)
         if self.level > 99:
             self.level = 99
@@ -572,7 +582,6 @@ class MainBoard:
 
                     # Locks piece in place
                     elif self.piece.status == 'collided':
-                        print('DEBUG: Piece Locked')
                         if self.lineClearStatus == 'idle':
                             for i in range(0, 4):
                                 self.blockMat[self.piece.blocks[i].currentPos.row][self.piece.blocks[i].currentPos.col] = self.piece.type
