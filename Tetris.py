@@ -27,6 +27,7 @@ doubleSound = pygame.mixer.Sound('Sounds\Double.mp3')
 tripleSound = pygame.mixer.Sound('Sounds\Triple.mp3')
 tetrisSound = pygame.mixer.Sound('Sounds\Tetris.mp3')
 gameOverSound = pygame.mixer.Sound('Sounds\Game Over.mp3')
+levelUpSound = pygame.mixer.Sound('Sounds\Level Up.mp3')
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
@@ -538,7 +539,10 @@ class MainBoard:
             tripleSound.play()
         elif clearedLinesNum == 4:
             tetrisSound.play()
+        previousLevel = self.level
         self.level = STARTING_LEVEL + math.floor(self.lines/10)
+        if previousLevel > self.level:
+            levelUpSound.play()
         if self.level > 99:
             self.level = 99
 
