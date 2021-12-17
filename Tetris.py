@@ -24,12 +24,14 @@ touchPieceSound = pygame.mixer.Sound('Sounds\Piece Touch.mp3')
 touchPieceChannel.set_volume(0.2)
 singleSound = pygame.mixer.Sound('Sounds\Single.mp3')
 doubleSound = pygame.mixer.Sound('Sounds\Double.mp3')
-doubleSound.set_volume(0.75)
+doubleSound.set_volume(1)
 tripleSound = pygame.mixer.Sound('Sounds\Triple.mp3')
 tetrisSound = pygame.mixer.Sound('Sounds\Tetris.mp3')
 gameOverSound = pygame.mixer.Sound('Sounds\Game Over.mp3')
 levelUpSound = pygame.mixer.Sound('Sounds\Level Up.mp3')
-levelUpSound.set_volume(0.75)
+levelUpSound.set_volume(1)
+blockFallSound = pygame.mixer.Sound('Sounds\Block Fall.mp3')
+letsGoSound = pygame.mixer.Sound('Sounds\Let\'s Go.mp3')
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
@@ -460,6 +462,7 @@ class MainBoard:
 
     def dropFreeBlocks(self):  # Drops down the floating blocks after line clears occur
 
+        blockFallSound.play()
         for cLIndex in range(0, 4):
             if self.clearedLines[cLIndex] >= 0:
                 for rowIndex in range(self.clearedLines[cLIndex], 0, -1):
@@ -967,6 +970,7 @@ def gameLoop():
 # Main program
 key = GameKeyInput()
 gameClock = GameClock()
+letsGoSound.play()
 gameLoop()
 pygame.quit()
 sys.exit()
